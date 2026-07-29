@@ -1,18 +1,14 @@
 const input = document.getElementById("txtInput");
 const resultado = document.getElementById("resultado");
 const marcaResultado = document.getElementById("marcaResultado");
-const boton = document.getElementById("btnCopiar");
+const btnCopiar = document.getElementById("btnCopiar");
+const btnBorrar = document.getElementById("btnBorrar");
 
 input.addEventListener("input", actualizar);
 
 function actualizar() {
     let texto = input.value;
-
-    // Limpiar
-    boton.textContent = "🗐"
-    boton.style.color = "";
-    marcaResultado.textContent = "";
-    marcaResultado.style.background = "";
+    limpiar()
 
     if (texto.includes("'")) {
         texto = texto.replaceAll("'", "-");
@@ -22,7 +18,7 @@ function actualizar() {
 
     if (texto.includes("--")) {
         texto = texto.replaceAll("-", "");
-        marcaResultado.textContent = "Amazon";
+        marcaResultado.textContent = "Spartoo";
         marcaResultado.style.background = "#FF6666";
     }
 
@@ -31,12 +27,31 @@ function actualizar() {
         marcaResultado.textContent = "Zalando";
         marcaResultado.style.background = "yellow";
     }
-
+    btnBorrar.hidden = false;
     resultado.value = texto;
 }
 
-boton.addEventListener("click", () => {
+function limpiar(remove = false) {
+    if (remove) {
+        input.value = '';
+    }
+    btnBorrar.hidden = true;
+    resultado.value = "";
+    btnCopiar.textContent = "🗐"
+    btnCopiar.style.color = "";
+    marcaResultado.textContent = "";
+    marcaResultado.style.background = "";
+}
+
+
+btnCopiar.addEventListener("click", () => {
     navigator.clipboard.writeText(resultado.value)
-    boton.textContent = "✔"
-    boton.style.color = "green";
+    if (!btnCopiar.textContent.includes("✔")){
+        btnCopiar.textContent += "✔"
+    }
+    btnCopiar.style.color = "green";
+});
+
+btnBorrar.addEventListener("click", () => {
+    limpiar(true);
 });
