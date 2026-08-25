@@ -29,6 +29,7 @@ function actualizar() {
     }
     btnBorrar.hidden = false;
     resultado.value = texto;
+    copiar()
 }
 
 function limpiar(remove = false) {
@@ -43,15 +44,40 @@ function limpiar(remove = false) {
     marcaResultado.style.background = "";
 }
 
-
-btnCopiar.addEventListener("click", () => {
+function copiar() {
     navigator.clipboard.writeText(resultado.value)
     if (!btnCopiar.textContent.includes("✔")){
         btnCopiar.textContent += "✔"
     }
     btnCopiar.style.color = "green";
+}
+
+btnCopiar.addEventListener("click", () => {
+    copiar();
 });
 
 btnBorrar.addEventListener("click", () => {
     limpiar(true);
+});
+
+document.addEventListener("keydown", function(event) {
+  console.log(event.key.toLowerCase());
+
+  switch (event.key.toLowerCase()) {
+    case "1":
+      if (event.ctrlKey) {
+        event.preventDefault();
+        if (resultado.value) {
+          copiar();
+        }
+      }
+      break;
+
+    case "delete":
+      event.preventDefault();
+      if (resultado.value) {
+        limpiar(true);
+      }
+      break;
+  }
 });
